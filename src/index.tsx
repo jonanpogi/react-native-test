@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     display: "flex",
     rowGap: 16,
+    padding: 16,
   },
   modalOuterContainer: {
     flex: 1,
