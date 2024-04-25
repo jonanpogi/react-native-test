@@ -5,9 +5,9 @@ import {
   View,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Product } from "..";
 import Collapsible from "react-native-collapsible";
 import { useState } from "react";
+import { Product } from "../screens/Products";
 
 const AppItem = ({
   id,
