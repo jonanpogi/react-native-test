@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Products from "../screens/Products";
+import DashboardNavigator from "./DashboardNavigator";
 
 declare global {
   namespace ReactNavigation {
@@ -8,7 +8,7 @@ declare global {
 }
 
 type AppStackParamList = {
-  Products: undefined;
+  Dashboard: undefined;
 };
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator<AppStackParamList>();
 const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ header: () => undefined }}>
-      <Stack.Screen name="Products" component={Products} />
+      <Stack.Screen name="Dashboard" component={DashboardNavigator} />
     </Stack.Navigator>
   );
 };

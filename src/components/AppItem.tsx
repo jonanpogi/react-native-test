@@ -1,121 +1,113 @@
-import {
-  StyleSheet,
-  Text,
-  Image,
-  View,
-  TouchableWithoutFeedback,
-} from "react-native";
-import Collapsible from "react-native-collapsible";
-import { useState } from "react";
-import { Product } from "../screens/Products";
+import { StyleSheet, Text, View } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const AppItem = ({
-  id,
-  description,
-  rating,
-  title,
-  price,
-  category,
-  image,
-}: Product) => {
-  const [isCollapsed, setIsCollpsed] = useState(true);
+type Transaction = "cash_in" | "cash_out" | "pay_retailer" | "recieved_payment";
+
+type Props = {
+  transaction: Transaction;
+  amount: number;
+  date: string;
+};
+
+const AppItem = ({ transaction, amount, date }: Props) => {
+  const details = (transaction: Transaction) => {
+    let icon = null;
+    let transactionMessage = "";
+
+    switch (transaction) {
+      case "cash_in": {
+        icon = <MaterialIcons name="add" size={24} color="#FFFFFF" />;
+        transactionMessage = "Cash In";
+        break;
+      }
+      case "cash_out": {
+        icon = <FontAwesome name="bank" size={24} color="#FFFFFF" />;
+        transactionMessage = "Cash Out";
+        break;
+      }
+      case "pay_retailer": {
+        icon = (
+          <FontAwesome6 name="money-bill-wave" size={24} color="#FFFFFF" />
+        );
+        transactionMessage = "Pay Retailer";
+        break;
+      }
+      case "recieved_payment": {
+        icon = (
+          <MaterialCommunityIcons name="hand-coin" size={24} color="#FFFFFF" />
+        );
+        transactionMessage = "Recieved Payment";
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    return {
+      icon,
+      transactionMessage,
+    };
+  };
 
   return (
-    <TouchableWithoutFeedback onPress={() => setIsCollpsed(!isCollapsed)}>
-      <View style={styles.outerContainer}>
-        <View style={styles.container}>
-          <Image source={{ uri: image }} style={styles.image} />
-          <View style={styles.textContainer}>
-            <Text style={styles.category}>{category}</Text>
-            <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-              {title}
-            </Text>
-            <Text style={styles.price}>{"$" + price}</Text>
-          </View>
-        </View>
-
-        <Collapsible collapsed={isCollapsed}>
-          <View style={styles.textContainer}>
-            <View style={styles.lineBreak} />
-            <Text style={styles.label}>ID:</Text>
-            <Text style={styles.description}>{id}</Text>
-
-            <View style={styles.lineBreak} />
-            <Text style={styles.label}>Description:</Text>
-            <Text style={styles.description}>{description}</Text>
-
-            <View style={styles.lineBreak} />
-            <Text style={styles.label}>Rating:</Text>
-            <Text style={styles.description}>{rating.rate}</Text>
-          </View>
-        </Collapsible>
+    <View style={styles().container}>
+      <View style={styles().iconContainer}>{details(transaction).icon}</View>
+      <View style={styles().innerContainer}>
+        <Text style={styles().transaction}>
+          {details(transaction).transactionMessage}
+        </Text>
+        <Text style={styles(transaction).amount}>
+          {transaction === "recieved_payment" ? "+ " + amount : "- " + amount}
+        </Text>
       </View>
-    </TouchableWithoutFeedback>
+      <Text style={styles().date}>{date}</Text>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  outerContainer: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 16,
-    padding: 16,
-    shadowOffset: {
-      width: 0,
-      height: 4, // Increase the shadow offset for a more intense effect
+const styles = (transaction?: Transaction) =>
+  StyleSheet.create({
+    container: {
+      height: 70,
+      backgroundColor: "#FFFFFF",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      padding: 16,
     },
-    shadowOpacity: 0.5, // Increase the shadow opacity for a more intense effect
-    shadowRadius: 8, // Increase the shadow radius for a more intense effect
-    elevation: 10, // Add elevation for shadow effect
-  },
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  image: {
-    width: 120,
-    height: 120,
-    marginRight: 6,
-  },
-  textContainer: {
-    flex: 1,
-    marginRight: 6,
-  },
-  category: {
-    fontSize: 18,
-    color: "#333333",
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "#333333",
-    marginBottom: 8,
-  },
-  price: {
-    fontSize: 18,
-    color: "#333333",
-  },
-  label: {
-    fontSize: 18,
-    color: "#333333",
-    fontWeight: "700",
-    marginBottom: 16,
-  },
-  description: {
-    fontSize: 18,
-    color: "#333333",
-    fontWeight: "300",
-    fontStyle: "italic",
-    marginBottom: 16,
-  },
-  lineBreak: {
-    height: 1,
-    width: "100%",
-    backgroundColor: "#333333",
-    marginVertical: 8,
-  },
-});
+    iconContainer: {
+      backgroundColor: "#66A3FF",
+      padding: 16,
+      borderRadius: 50,
+      width: 60,
+      height: 60,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: 16,
+    },
+    innerContainer: {
+      flex: 1,
+    },
+    transaction: {
+      fontSize: 16,
+      fontWeight: "700",
+      color: "#333333",
+    },
+    amount: {
+      fontSize: 20,
+      fontWeight: "700",
+      color: transaction === "recieved_payment" ? "#33CC7F" : "#FF6666",
+    },
+    date: {
+      fontSize: 14,
+      fontWeight: "400",
+      color: "#666666",
+    },
+  });
 
 export default AppItem;
