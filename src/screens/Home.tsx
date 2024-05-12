@@ -10,18 +10,13 @@ import AppIconButton from "../components/AppIconButton";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import AppItem from "../components/AppItem";
-import AppGradientText from "../components/AppGradientText";
 
 const Home = () => {
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
         <Text style={styles.label}>Hello there!,</Text>
-        <AppGradientText
-          colors={["004BCC", "#66A3FF", "004BCC"]}
-          style={styles.fullName}
-          text="John Doe"
-        />
+        <Text style={styles.fullName}>Jonan Bie</Text>
         <View style={styles.balanceContainer}>
           <View>
             <Text style={styles.balanceInfoText}>Available Balance</Text>
@@ -45,14 +40,16 @@ const Home = () => {
           />
         </ScrollView>
         <Text style={styles.label}>Transactions</Text>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <AppItem transaction={"cash_in"} amount={100} date={"May 12, 2024"} />
           <AppItem
             transaction={"cash_out"}
             amount={100}
             date={"May 12, 2024"}
           />
-          <Text style={styles.link}>View all transactions</Text>
+          <Text style={styles.link} onPress={() => {}}>
+            View all transactions...
+          </Text>
         </ScrollView>
       </View>
     </AppSafeAreaView>
@@ -74,7 +71,8 @@ const styles = StyleSheet.create({
   fullName: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#333333",
+    color: "#66A3FF",
+    marginBottom: 16,
   },
   balanceContainer: {
     display: "flex",
@@ -123,8 +121,8 @@ const styles = StyleSheet.create({
   },
   link: {
     fontSize: 16,
-    fontWeight: "500",
-    color: "#007AFF",
+    fontWeight: "700",
+    color: "#66A3FF",
     alignSelf: "center",
     margin: 8,
   },

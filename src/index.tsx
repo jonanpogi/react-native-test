@@ -4,6 +4,8 @@ import Constants from "expo-constants";
 import tokenCache from "./utils/tokenCache";
 import AuthNavigator from "./navigations/AuthNavigator";
 import { NavigationContainer } from "@react-navigation/native";
+import { ApolloProvider } from "@apollo/client";
+import apolloClient from "./utils/apolloClient";
 
 const Main = () => {
   return (
@@ -11,14 +13,16 @@ const Main = () => {
       tokenCache={tokenCache}
       publishableKey={Constants.expoConfig?.extra?.CLERK_PUBLISHABLE_KEY}
     >
-      <NavigationContainer>
-        <SignedIn>
-          <AppNavigator />
-        </SignedIn>
-        <SignedOut>
-          <AuthNavigator />
-        </SignedOut>
-      </NavigationContainer>
+      <ApolloProvider client={apolloClient}>
+        <NavigationContainer>
+          <SignedIn>
+            <AppNavigator />
+          </SignedIn>
+          <SignedOut>
+            <AuthNavigator />
+          </SignedOut>
+        </NavigationContainer>
+      </ApolloProvider>
     </ClerkProvider>
   );
 };

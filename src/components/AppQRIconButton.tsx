@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
@@ -32,7 +32,7 @@ const styles = (color?: string) =>
       borderColor: color,
       backgroundColor: "white",
       position: "absolute",
-      top: "-50%",
+      top: Platform.OS === "ios" ? "-50%" : "-35%",
       shadowOffset: {
         width: 0,
         height: 4, // Increase the shadow offset for a more intense effect

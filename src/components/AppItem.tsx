@@ -16,30 +16,40 @@ const AppItem = ({ transaction, amount, date }: Props) => {
   const details = (transaction: Transaction) => {
     let icon = null;
     let transactionMessage = "";
+    let color = "";
+    let amountSymbol = "";
 
     switch (transaction) {
       case "cash_in": {
-        icon = <MaterialIcons name="add" size={24} color="#FFFFFF" />;
+        icon = <MaterialIcons name="add" size={18} color="#FFFFFF" />;
         transactionMessage = "Cash In";
+        color = "#33CC7F";
+        amountSymbol = "+";
         break;
       }
       case "cash_out": {
-        icon = <FontAwesome name="bank" size={24} color="#FFFFFF" />;
+        icon = <FontAwesome name="bank" size={18} color="#FFFFFF" />;
         transactionMessage = "Cash Out";
+        color = "#FF6666";
+        amountSymbol = "-";
         break;
       }
       case "pay_retailer": {
         icon = (
-          <FontAwesome6 name="money-bill-wave" size={24} color="#FFFFFF" />
+          <FontAwesome6 name="money-bill-wave" size={18} color="#FFFFFF" />
         );
         transactionMessage = "Pay Retailer";
+        color = "#FF6666";
+        amountSymbol = "-";
         break;
       }
       case "recieved_payment": {
         icon = (
-          <MaterialCommunityIcons name="hand-coin" size={24} color="#FFFFFF" />
+          <MaterialCommunityIcons name="hand-coin" size={18} color="#FFFFFF" />
         );
         transactionMessage = "Recieved Payment";
+        color = "#33CC7F";
+        amountSymbol = "+";
         break;
       }
       default: {
@@ -50,6 +60,8 @@ const AppItem = ({ transaction, amount, date }: Props) => {
     return {
       icon,
       transactionMessage,
+      color,
+      amountSymbol,
     };
   };
 
@@ -60,8 +72,8 @@ const AppItem = ({ transaction, amount, date }: Props) => {
         <Text style={styles().transaction}>
           {details(transaction).transactionMessage}
         </Text>
-        <Text style={styles(transaction).amount}>
-          {transaction === "recieved_payment" ? "+ " + amount : "- " + amount}
+        <Text style={styles(details(transaction).color).amount}>
+          {details(transaction).amountSymbol + " " + Number(amount).toFixed(2)}
         </Text>
       </View>
       <Text style={styles().date}>{date}</Text>
@@ -69,7 +81,7 @@ const AppItem = ({ transaction, amount, date }: Props) => {
   );
 };
 
-const styles = (transaction?: Transaction) =>
+const styles = (color?: string) =>
   StyleSheet.create({
     container: {
       height: 70,
@@ -83,8 +95,8 @@ const styles = (transaction?: Transaction) =>
       backgroundColor: "#66A3FF",
       padding: 16,
       borderRadius: 50,
-      width: 60,
-      height: 60,
+      width: 50,
+      height: 50,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -94,14 +106,14 @@ const styles = (transaction?: Transaction) =>
       flex: 1,
     },
     transaction: {
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: "700",
       color: "#333333",
     },
     amount: {
-      fontSize: 20,
+      fontSize: 16,
       fontWeight: "700",
-      color: transaction === "recieved_payment" ? "#33CC7F" : "#FF6666",
+      color,
     },
     date: {
       fontSize: 14,
