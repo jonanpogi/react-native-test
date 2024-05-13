@@ -10,50 +10,49 @@ import {
 } from "react-native";
 import { gql, useMutation } from "@apollo/client";
 import AppLoading from "../components/AppLoading";
-import { useNavigation } from "@react-navigation/native";
-import { useUser } from "@clerk/clerk-expo";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import AppKeyboardAvoidingView from "../components/AppKeyboardAvoidingView";
+import AppBackButton from "../components/AppBackButton";
+import { AppStackParamList } from "../navigations/AppNavigator";
 
-type UserInput = {
+type UserUpdateInput = {
   input: {
-    clerkId: string;
-    email: string;
-    firstName: string;
-    lastName: string;
+    clerkId?: string;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    imageUrl?: string;
   };
 };
 
-const ADD_USER = gql`
-  mutation AddUser($input: UserInput!) {
-    addUser(input: $input) {
-      firstName
-      lastName
+const UPDATE_USER = gql`
+  mutation UpdateUser($input: UserUpdateInput!) {
+    updateUser(input: $input) {
+      _id
     }
   }
 `;
 
-const CreateProfile = () => {
-  const { user } = useUser();
+const UpdateProfileName = () => {
+  const route = useRoute<RouteProp<AppStackParamList, "UpdateProfileName">>();
   const navigation = useNavigation();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState(route.params.firstName);
+  const [lastName, setLastName] = useState(route.params.lastName);
   const [loading, setLoading] = useState(false);
-  const [addUser] = useMutation(ADD_USER, { errorPolicy: "all" });
+  const [updateUser] = useMutation(UPDATE_USER, { errorPolicy: "all" });
 
-  const handleAddUser = async () => {
+  const handleUpdateUser = async () => {
     setLoading(true);
 
-    const variables: UserInput = {
+    const variables: UserUpdateInput = {
       input: {
-        clerkId: user?.id || "",
-        email: user?.primaryEmailAddress?.emailAddress || "",
         firstName,
         lastName,
       },
     };
 
     try {
-      const { errors } = await addUser({
+      const { errors } = await updateUser({
         variables,
         refetchQueries: ["GetUser"],
       });
@@ -62,7 +61,7 @@ const CreateProfile = () => {
         throw new Error(errors[0].message);
       }
 
-      return navigation.navigate("Dashboard");
+      return navigation.goBack();
     } catch (error) {
       return Alert.alert(
         "Oops!",
@@ -78,9 +77,13 @@ const CreateProfile = () => {
       <AppSafeAreaView>
         <AppKeyboardAvoidingView>
           <View style={styles.container}>
-            <Text style={styles.title}>Create Profile</Text>
+            <AppBackButton />
 
-            <Text style={styles.subTitle}>Please tell us your name</Text>
+            <Text style={styles.title}>Update Profile Name</Text>
+
+            <Text style={styles.subTitle}>
+              Please fill the following fields below to change your full name
+            </Text>
 
             <View style={styles.content}>
               <Text style={styles.label}>First Name:</Text>
@@ -103,7 +106,7 @@ const CreateProfile = () => {
               />
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={handleAddUser}>
+            <TouchableOpacity style={styles.button} onPress={handleUpdateUser}>
               <Text style={styles.buttonText}> SAVE CHANGES</Text>
             </TouchableOpacity>
           </View>
@@ -162,4 +165,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateProfile;
+export default UpdateProfileName;

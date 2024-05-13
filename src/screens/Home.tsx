@@ -4,19 +4,49 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import AppSafeAreaView from "../components/AppSafeAreaView";
 import AppIconButton from "../components/AppIconButton";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import AppItem from "../components/AppItem";
+import { gql, useQuery } from "@apollo/client";
+import { useAuth } from "@clerk/clerk-expo";
+import { useEffect } from "react";
+
+const GET_USER = gql`
+  query GetUser {
+    getUser {
+      _id
+      firstName
+      lastName
+    }
+  }
+`;
 
 const Home = () => {
+  const { userId } = useAuth();
+  const { data, loading, error } = useQuery(GET_USER, {
+    errorPolicy: "all",
+    skip: !userId,
+  });
+
+  useEffect(() => {
+    if (error) {
+      return Alert.alert("Oops!", error.message || "Something went wrong!");
+    }
+  }, [error]);
+
+  const fullName = loading
+    ? "Loading..."
+    : data?.getUser?.firstName + " " + data?.getUser?.lastName;
+
   return (
     <AppSafeAreaView>
       <View style={styles.container}>
         <Text style={styles.label}>Hello there!,</Text>
-        <Text style={styles.fullName}>Jonan Bie</Text>
+        <Text style={styles.fullName}>{fullName}</Text>
         <View style={styles.balanceContainer}>
           <View>
             <Text style={styles.balanceInfoText}>Available Balance</Text>

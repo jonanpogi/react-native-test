@@ -42,7 +42,7 @@ const Initial = () => {
       ]);
     }
 
-    if (data && data?.getUserByClerkId?._id) {
+    if (data && data?.getUser?._id) {
       return navigation.navigate("Dashboard");
     }
 

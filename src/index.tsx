@@ -6,6 +6,8 @@ import AuthNavigator from "./navigations/AuthNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { ApolloProvider } from "@apollo/client";
 import apolloClient from "./utils/apolloClient";
+import { PaperProvider } from "react-native-paper";
+import theme from "./utils/theme";
 
 const Main = () => {
   return (
@@ -14,14 +16,16 @@ const Main = () => {
       publishableKey={Constants.expoConfig?.extra?.CLERK_PUBLISHABLE_KEY}
     >
       <ApolloProvider client={apolloClient}>
-        <NavigationContainer>
-          <SignedIn>
-            <AppNavigator />
-          </SignedIn>
-          <SignedOut>
-            <AuthNavigator />
-          </SignedOut>
-        </NavigationContainer>
+        <PaperProvider theme={theme}>
+          <NavigationContainer>
+            <SignedIn>
+              <AppNavigator />
+            </SignedIn>
+            <SignedOut>
+              <AuthNavigator />
+            </SignedOut>
+          </NavigationContainer>
+        </PaperProvider>
       </ApolloProvider>
     </ClerkProvider>
   );

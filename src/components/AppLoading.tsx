@@ -1,4 +1,5 @@
 import { ActivityIndicator, Modal, StyleSheet, View } from "react-native";
+import { Portal } from "react-native-paper";
 
 type Props = {
   visible: boolean;
@@ -6,13 +7,15 @@ type Props = {
 
 const AppLoading = ({ visible }: Props) => {
   return (
-    <Modal animationType="fade" transparent={true} visible={visible}>
-      <View style={styles.outerContainer}>
-        <View style={styles.innerContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
+    <Portal>
+      <Modal animationType="fade" transparent={true} visible={visible}>
+        <View style={styles.outerContainer}>
+          <View style={styles.innerContainer}>
+            <ActivityIndicator size="large" color="#007AFF" />
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </Portal>
   );
 };
 
