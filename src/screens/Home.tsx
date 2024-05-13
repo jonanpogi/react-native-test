@@ -53,7 +53,7 @@ const Home = () => {
             <Text style={styles.balanceAmount}>{`₱ 100.00`}</Text>
           </View>
           <TouchableOpacity style={styles.button} onPress={() => {}}>
-            <Text style={styles.buttonText}>+ CASH IN</Text>
+            <Text style={styles.buttonText}>+ ADD FUND</Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.label}>Services</Text>
@@ -66,17 +66,13 @@ const Home = () => {
           />
           <AppIconButton
             icon={<FontAwesome name="bank" size={24} color="#FFFFFF" />}
-            label="Cash Out"
+            label="Transfer to Bank"
           />
         </ScrollView>
         <Text style={styles.label}>Transactions</Text>
         <ScrollView showsVerticalScrollIndicator={false}>
           <AppItem transaction={"cash_in"} amount={100} date={"May 12, 2024"} />
-          <AppItem
-            transaction={"cash_out"}
-            amount={100}
-            date={"May 12, 2024"}
-          />
+
           <Text style={styles.link} onPress={() => {}}>
             View all transactions...
           </Text>
